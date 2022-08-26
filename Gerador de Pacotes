@@ -1,0 +1,240 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import time
+import tkinter
+import datetime
+import fileinput
+
+# Criar janela
+window = tkinter.Tk()
+
+# Criar título para a janela
+window.title("Gerador de Pacotes 1.2")
+
+# Variaveis Globais
+Dir = os.getcwd() # Coletar dir atual
+
+# Definir tamanho da janela do programa
+window.geometry("350x550")
+
+# Scripts!
+def gerar():
+        btn0.configure(text="Aguarde...")
+        print("Gerando Pacote!")
+        time.sleep(1)
+
+        # Gerar árvore de diretórios
+        print("Gerando Árvore de Diretórios Fixa")
+        time.sleep(1)
+
+        os.system("cd " + '"' + Dir + '"')
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' )
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/usr")
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/DEBIAN")
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/usr/local/games/bonobo/shortcuts")
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/usr/local/games/bonobo/wineprefix")
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/usr/local/games/bonobo/wine-version")
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/usr/share/applications")
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/usr/share/icons/bonobo")
+
+        print("Gerando Árvore de Diretórios Variável")
+        time.sleep(1)
+
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/usr/local/games/bonobo/shortcuts/" + (str(ent1.get())) ) # Wine Prefix
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/usr/local/games/bonobo/wineprefix/" + (str(ent1.get())) ) # Wine Prefix
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/usr/local/games/bonobo/wine-version/" + (str(ent2.get())) ) # Wine Version
+        os.system("mkdir -p " + '"' + (str(ent0.get())) + '"' + "/usr/share/icons/bonobo/" + (str(ent1.get())) ) # Wine Prefix
+
+        print("Árvore de diretórios gerada com sucesso!")
+
+        print("Movendo pastas padrão")
+        time.sleep(1)
+
+        # Enviar cada arquivo para seu devido diretório
+        os.system("mv " + (str(ent1.get())) + " " + (str(ent0.get())) + "/usr/local/games/bonobo/wineprefix")
+        os.system("mv " + (str(ent2.get())) + " " + (str(ent0.get())) + "/usr/local/games/bonobo/wine-version")
+        print("Pastas padrão movidas com sucesso!")
+        time.sleep(1)
+
+        # Preencher o arquivo CONTROL
+        print("Gerando arquivo CONTROL")
+        time.sleep(1)
+        os.system("cp control " + (str(ent0.get())) + "/DEBIAN")
+
+        print("Preenchendo arquivo CONTROL!")
+        os.system("sed -i 's/GRUPO/" + (str(ent1.get())) + "/' " + (str(ent0.get())) + "/DEBIAN/control") # Wine Prefix
+        os.system("sed -i 's/BONOBO/" + (str(ent4.get())) + "/' " + (str(ent0.get())) + "/DEBIAN/control") # Size in Bytes
+        os.system("sed -i 's/RULEZ/" + (str(ent5.get())) + "/' " + (str(ent0.get())) + "/DEBIAN/control") # Package Description
+
+        print("Definindo CHMOD 555 a CONTROL")
+        os.system("echo " + (str(ent11.get())) + " | sudo -S chmod 555 " + (str(ent0.get())) +  "/DEBIAN/control")
+
+        print("CONTROL gerado com sucesso!")
+
+        # Preencher o arquivo SHORTCUT
+        print("Gerando arquivo SHORTCUT")
+        time.sleep(1)
+        
+        os.system("cp SHORTCUT " + (str(ent0.get())) + "/usr/local/games/bonobo/shortcuts/" + (str(ent1.get())) + "/" + (str(ent1.get())) )
+
+        print("Preenchendo arquivo SHORTCUT!")
+        time.sleep(1)
+        
+        os.system("sed -i 's/BONOBO/" + (str(ent1.get())) + "/' " + (str(ent0.get())) + "/usr/local/games/bonobo/shortcuts/" +(str(ent1.get())) + "/" + (str(ent1.get())) ) # Wine Prefix
+        os.system("sed -i 's/GRUPO/" + (str(ent2.get())) + "/' " + (str(ent0.get())) + "/usr/local/games/bonobo/shortcuts/" + (str(ent1.get())) + "/" + (str(ent1.get())) ) # Wine Version
+        os.system("sed -i 's/RULEZ/" + (str(ent8.get())) + "/' " + (str(ent0.get())) + "/usr/local/games/bonobo/shortcuts/" + (str(ent1.get())) + "/" + (str(ent1.get())) ) # Game Root
+        os.system("sed -i 's/ALLGURLZ/" + (str(ent9.get())) + "/' " + (str(ent0.get())) + "/usr/local/games/bonobo/shortcuts/" + (str(ent1.get())) + "/" + (str(ent1.get())) ) # Game Exe
+
+        print("SHORTCUT gerado com sucesso!")
+        time.sleep(1)     
+
+        print("Verificando a existência do PostInst")
+        if (ent10.get()) == "0":
+                time.sleep(1)
+                print("Nenhum arquivo PostInst detectado!")
+
+        elif (ent10.get()) == "1":
+                time.sleep(1)
+                print("PostInst Detectado!")
+                time.sleep(1)
+
+                print("Definindo CHMOD 555 a PostInst")
+                time.sleep(1)
+                os.system("mv postinst " + (str(ent0.get())) + "/DEBIAN")
+
+                print("Definindo CHMOD 555 a PostInst")
+                time.sleep(1)
+                os.system("echo " + (str(ent11.get())) + " | sudo -S chmod 555 " + (str(ent0.get())) +  "/DEBIAN/postinst")
+
+        else:
+                time.sleep(1)
+                print("Valor incorreto. Definindo valor padrão 0")
+
+        # Gerar atalho do desktop
+        print("Gerando atalho do desktop")
+        time.sleep(1)
+        os.system("cp Desktop.desktop " + (str(ent0.get())) + "/usr/share/applications/")
+
+        os.system("sed -i 's/GRUPO/" + (str(ent9.get())) + "/g' " + (str(ent0.get())) + "/usr/share/applications/Desktop.desktop") # Game Exe
+        os.system("sed -i 's/BONOBO/" + (str(ent7.get())) + "/g' " + (str(ent0.get())) + "/usr/share/applications/Desktop.desktop") # Desktop Name
+        os.system("sed -i 's/ALLPUSSY/" + (str(ent1.get())) + "/g' " + (str(ent0.get())) + "/usr/share/applications/Desktop.desktop") # Wine Prefix
+
+	# Renomear o atalho do desktop
+        print("Renomeando atalho do desktop")
+        time.sleep(1)
+        
+        os.system("mv " + (str(ent0.get())) + "/usr/share/applications/Desktop.desktop " + (str(ent0.get())) + "/usr/share/applications/" + '"' + (str(ent8.get())) + '.desktop"')
+
+        print("Atalho gerado e renomeado com sucesso!")
+        print("Definir ícone do atalho do desktop")
+        time.sleep(1)
+
+        # Definir ícone
+        os.system("mv "+ (str(ent1.get())) + ".png " + (str(ent0.get())) + "/usr/share/icons/bonobo/" + (str(ent1.get())) + "/" + (str(ent1.get())) + ".png")
+
+        print("Ícone gerado com sucesso")
+        print("Pasta Raíz gerada com sucesso!")
+
+        btn0.configure(text="Concluído!")
+
+def debbar():
+        # Gerar pacote .deb
+        print("Processo deveras demorado. Vá tomar um café.")
+        time.sleep(1)
+        os.system("dpkg-deb --build " + (str(ent0.get())) )
+
+        print("Pacote gerado com sucesso!")
+
+
+# Criação dos Itens a serem Usados
+
+lbl0 = tkinter.Label(window, text=" ") #Espaço
+lbl1 = tkinter.Label(window, text=" ") #Espaço
+lbl2 = tkinter.Label(window, text="# Gerador de Pacotes .deb - By Nathan Drake #")
+lbl3 = tkinter.Label(window, text=" ") #Espaço
+lbl4 = tkinter.Label(window, text="Preencha todos os itens, são obrigatórios!")
+lbl5 = tkinter.Label(window, text="Somente o Post-Inst é opcional.")
+lbl6 = tkinter.Label(window, text="Caso for usar Post-Inst, preencha com 0 ou 1.")
+lbl7 = tkinter.Label(window, text="0 para Ausente, 1 para Presente.")
+lbl8 = tkinter.Label(window, text=" ")
+lbl9 = tkinter.Label(window, text="Define Package") # Package
+
+lbl10 = tkinter.Label(window, text="Deb Name")
+lbl11 = tkinter.Label(window, text="WINE Prefix")
+lbl12 = tkinter.Label(window, text="WINE Version")
+lbl13 = tkinter.Label(window, text="Define CONTROL")
+lbl14 = tkinter.Label(window, text="Size in Bytes")
+lbl15 = tkinter.Label(window, text="Package Description")
+lbl16 = tkinter.Label(window, text="Define SHORTCUT")
+lbl17 = tkinter.Label(window, text="Shortcut Name")
+lbl18 = tkinter.Label(window, text="Dir Root")
+lbl19 = tkinter.Label(window, text="Soft Exec")
+lbl20 = tkinter.Label(window, text="Post-Inst")
+lbl21 = tkinter.Label(window, text="SUDO")
+lbl22 = tkinter.Label(window, text=" ") #Espaço
+
+ent0 = tkinter.Entry(window) # Deb Name
+ent1 = tkinter.Entry(window) # Wine Prefix
+ent2 = tkinter.Entry(window) # Wine Version
+#ent3 = tkinter.Entry(window) # Define CONTROL
+ent4 = tkinter.Entry(window) # Size in Bytes
+ent5 = tkinter.Entry(window) # Package Description
+#ent6 = tkinter.Entry(window) # Define SHORTCUT
+ent7 = tkinter.Entry(window) # Desktop Name (shortcut name)
+ent8 = tkinter.Entry(window) # Dir Root
+ent9 = tkinter.Entry(window) # Soft Exe
+ent10 = tkinter.Entry(window) # Post-Inst
+ent11 = tkinter.Entry(window) # SUDO
+
+btn0 = tkinter.Button(window, text="Gerar Deb", command=debbar)
+btn1 = tkinter.Button(window, text="Gerar Raíz", command=gerar)
+
+# Layout - Disposição dos Itens Criados Acima
+
+#lbl0.grid(row = 0, column = 0, columnspan = 2)
+lbl1.grid(row = 1, column = 0, columnspan = 2) #Espaço
+lbl2.grid(row = 2, column = 0, columnspan = 2)
+lbl3.grid(row = 3, column = 0, columnspan = 2) #Espaço
+lbl4.grid(row = 4, column = 0, columnspan = 2)
+lbl5.grid(row = 5, column = 0, columnspan = 2)
+lbl6.grid(row = 6, column = 0, columnspan = 2)
+lbl7.grid(row = 7, column = 0, columnspan = 2)
+lbl8.grid(row = 8, column = 0, columnspan = 2)
+lbl9.grid(row = 9, column = 0, columnspan = 2) #Espaço
+lbl10.grid(row = 10, column = 0, columnspan = 1)
+lbl11.grid(row = 11, column = 0, columnspan = 1)
+lbl12.grid(row = 12, column = 0, columnspan = 1)
+lbl13.grid(row = 13, column = 0, columnspan = 2) # CONTROL
+lbl14.grid(row = 14, column = 0, columnspan = 1)
+lbl15.grid(row = 15, column = 0, columnspan = 1)
+lbl16.grid(row = 16, column = 0, columnspan = 2) # Shortcut
+lbl17.grid(row = 17, column = 0, columnspan = 1)
+lbl18.grid(row = 18, column = 0, columnspan = 1)
+lbl19.grid(row = 19, column = 0, columnspan = 1)
+lbl20.grid(row = 20, column = 0, columnspan = 1)
+lbl21.grid(row = 21, column = 0, columnspan = 1)
+lbl22.grid(row = 22, column = 0, columnspan = 1) #Espaço
+
+ent0.grid(row = 10, column = 1)
+ent1.grid(row = 11, column = 1)
+ent2.grid(row = 12, column = 1)
+#ent3.grid(row = 13, column = 1)
+ent4.grid(row = 14, column = 1)
+ent5.grid(row = 15, column = 1)
+#ent6.grid(row = 16, column = 1)
+ent7.grid(row = 17, column = 1)
+ent8.grid(row = 18, column = 1)
+
+ent9.grid(row = 19, column = 1)
+ent10.grid(row = 20, column = 1)
+ent11.grid(row = 21, column = 1)
+
+btn0.grid(row = 23, column = 1, columnspan = 1)
+btn1.grid(row = 23, column = 0, columnspan = 1)
+
+# Gerar janela principal e rodar o programa!
+window.mainloop()
+
+# Fim do Script.
