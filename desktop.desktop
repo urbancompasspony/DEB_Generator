@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=BONOBO
+Comment=Grupo Bonobo
+Type=Application
+Exec=/usr/local/games/bonobo/shortcuts/ALLPUSSY/ALLPUSSY
+Icon=/usr/share/icons/bonobo/ALLPUSSY/ALLPUSSY.png
+StartupWMClass=GRUPO
+Categories=Game
+Name[pt_BR]=BONOBO
