@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Constantes do Grupo Bonobo
+export BNBWINE="/usr/local/games/bonobo/wine-version/" &&
+export WINEPREFIX="/usr/local/games/bonobo/wineprefix/" &&
+export BNBPATH="/drive_c/Program Files/" &&
+
+# Variáveis dos Games
+export WINEPATH=$BNBWINE"GRUPO" &&
+export GAMEPATH=$WINEPREFIX"BONOBO"$BNBPATH"RULEZ" && 
+export GAMEEXE="ALLGURLZ" &&
+
+# Constantes de Execução do Wine
+export PATH=$WINEPATH"/bin" &&
+export WINELOADER=$WINEPATH"/bin/wine" &&
+export LD_LIBRARY_PATH=$WINEPATH"/lib" &&
+export WINESERVER=$WINEPATH"/bin/wineserver" &&
+export WINEDLLPATH=$WINEPATH"/lib/wine/fakedlls" &&
+export WINEDEBUG="-all" &&
+
+# Execução do Wine
+cd "$GAMEPATH" &&
+$WINELOADER "$GAMEPATH"/"$GAMEEXE"
