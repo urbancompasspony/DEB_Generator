@@ -1,0 +1,10 @@
+Package: GRUPO
+Version: 1.0
+Priority: optional
+Architecture: amd64
+Depends: wine
+Installed-Size: BONOBO
+Maintainer: Jose Humberto Ferreira Junior <josehumberto@grupobonobo.com.br>
+Homepage: http://www.grupobonobo.com.br 
+Copyright: ©2019 Grupo Bonobo. Todos os direitos reservados.
+Description: RULEZ
